@@ -18,13 +18,24 @@ function createNode(vnode) {
         reconcileChildren(node, props.children)
         updateNode(node, props)
     } else if(typeof type === 'function') {
-        node = updateFunctionComponent(vnode)
+        // 区分函数组件和类组件
+        node = type.prototype.isReactComponent ? updateClassComponet(vnode) : updateFunctionComponent(vnode)
     } else {
         node = document.createTextNode(vnode)
     }
     return node
 }
 
+// 先new，再执行实例的render
+function updateClassComponet(vnode) {
+    const {type, props} = vnode
+    const instance = new type(props)
+    const child = instance.render()
+    const node = createNode(child)
+    return node
+}
+
+// 执行函数
 function updateFunctionComponent(vnode) {
     const {type, props} = vnode
 

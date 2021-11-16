@@ -3,6 +3,7 @@
 // import ReactDOM from "./kreact/react-dom";
 // import Component from "./kreact/Component";
 import ReactDOM from "./co-react/reactDom";
+import Component from "./co-react/Component"
 import "./index.css";
 
 function FunctionComponent({name}) {
@@ -13,22 +14,22 @@ function FunctionComponent({name}) {
   );
 }
 
-// class ClassComponent extends Component {
-//   render() {
-//     return (
-//       <div className="border">
-//         <p>{this.props.name}</p>
-//       </div>
-//     );
-//   }
-// }
+class ClassComponent extends Component {
+  render() {
+    return (
+      <div className="border">
+        <p>{this.props.name}</p>
+      </div>
+    );
+  }
+}
 
 const jsx = (
   <div className="border">
     <h1>coboy</h1>
     <a href="https://www.amebyte.com.com/">amebyte</a>
     <FunctionComponent name="function" />
-    {/* <ClassComponent name="class" />  */}
+    <ClassComponent name="class" /> 
   </div>
 );
 
