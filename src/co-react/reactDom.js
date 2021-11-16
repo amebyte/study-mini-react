@@ -16,10 +16,17 @@ function createNode(vnode) {
     if(isString(type)) {
         node = document.createElement(type)
         reconcileChildren(node, props.children)
+        updateNode(node, props)
     } else {
         node = document.createTextNode(vnode)
     }
     return node
+}
+
+function updateNode(node, nextVal) {
+    Object.keys(nextVal).filter(k => k!== 'children').forEach(k => {
+        node[k] = nextVal[k]
+    })
 }
 
 function reconcileChildren(parentNode, children) {
