@@ -27,8 +27,8 @@ const jsx = (
   <div className="border">
     <h1>coboy</h1>
     <a href="https://www.amebyte.com.com/">amebyte</a>
-    {/* <FunctionComponent name="function" />
-    <ClassComponent name="class" /> */}
+    <FunctionComponent name="function" />
+    {/* <ClassComponent name="class" />  */}
   </div>
 );
 

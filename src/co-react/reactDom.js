@@ -17,9 +17,21 @@ function createNode(vnode) {
         node = document.createElement(type)
         reconcileChildren(node, props.children)
         updateNode(node, props)
+    } else if(typeof type === 'function') {
+        node = updateFunctionComponent(vnode)
     } else {
         node = document.createTextNode(vnode)
     }
+    return node
+}
+
+function updateFunctionComponent(vnode) {
+    const {type, props} = vnode
+
+    const child = type(props)
+
+    const node = createNode(child)
+
     return node
 }
 
