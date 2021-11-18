@@ -1,6 +1,7 @@
+import { updateHostComponent } from "./ReactFiberReconciler"
+import { isStr } from "./utils"
 // 更新vnode
 // 更新dom
-
 // work in progress  当前正在工作当中的 wip
 let wipRoot = null
 let nextUnitOfWork = null
@@ -11,12 +12,35 @@ export function scheduleUpdateOnFiber(fiber) {
 }
 
 function performUnitOfWork(wip) {
-// 1. 更新当前fiber
-// 2. 返回下一个要更新的fiber
+    const {type} = wip
+    // 1. 更新当前fiber
+    if(isStr(type)) {
+        // host
+        updateHostComponent(wip)
+    }
+    // 2. 返回下一个要更新的fiber
+    // 深度优先 王朝的故事
+    if(wip.child) {
+        return wip.child
+    }
+
+    while (wip) {
+        if(wip.sibling) {
+            return wip.sibling
+        }
+        wip = wip.return
+    }
+    return null
 }
 
-function workLoop(idleDeadline) {
-
+function workLoop(IdleDeadline) {
+    while(nextUnitOfWork && IdleDeadline.timeRemaining() > 0) {
+        nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
+    }
+    if(!nextUnitOfWork && wipRoot) {
+        // vnode 更新完了
+        // commitRoot()
+    }
 }
 
 requestIdleCallback(workLoop)
