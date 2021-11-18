@@ -1,4 +1,5 @@
 import { createFiber } from "./createFiber"
+import { isStr } from "./utils"
 
 export function updateHostComponent(wip) {
     // 更新自己
@@ -12,6 +13,9 @@ export function updateHostComponent(wip) {
 }
 
 function reconileChildren(returnFiber, children) {
+    if(isStr(children)) {
+        return
+    }
     const newChildren = Array.isArray(children) ? children : [children]
     let previousNewsFiber = null
     for(let i = 0; i < newChildren.length; i ++) {
