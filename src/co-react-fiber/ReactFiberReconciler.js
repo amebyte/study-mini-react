@@ -1,15 +1,15 @@
 import { createFiber } from "./createFiber"
-import { isStr } from "./utils"
+import { isStr, updateNode } from "./utils"
 
 export function updateHostComponent(wip) {
     // 更新自己
     if(!wip.stateNode) {
         wip.stateNode = document.createElement(wip.type)
         // 属性
+        updateNode(wip.stateNode, wip.props)
     }
     // 协调子节点
     reconileChildren(wip, wip.props.children)
-    console.log('wip', wip)
 }
 
 function reconileChildren(returnFiber, children) {
@@ -26,5 +26,6 @@ function reconileChildren(returnFiber, children) {
         } else {
             previousNewsFiber.sibling = newFiber
         }
+        previousNewsFiber = newFiber
     }
 }
