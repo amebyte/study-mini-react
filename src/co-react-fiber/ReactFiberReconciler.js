@@ -18,6 +18,10 @@ export function updateHostComponent(wip) {
     reconileChildren(wip, wip.props.children)
 }
 
+export function updateFragmentComponent(wip) {
+    reconileChildren(wip, wip.props.children)
+}
+
 function reconileChildren(returnFiber, children) {
     if(isStr(children)) {
         return

@@ -13,11 +13,21 @@ function FunctionComponent({name}) {
     );
 }
 
+function FC() {
+    return(
+        <>
+            <h1>coboy</h1>
+            <h2>cobyte</h2>
+        </>
+    )
+}
+
 const jsx = (
   <div className="border">
     <h1>coboy</h1>
     <a href="https://www.amebyte.com.com/">amebyte</a>
     <FunctionComponent name="cobyte" />
+    <FC />
   </div>
 );
 

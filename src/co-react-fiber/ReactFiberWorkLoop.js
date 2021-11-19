@@ -1,4 +1,4 @@
-import { updateFunctionComponent, updateHostComponent } from "./ReactFiberReconciler"
+import { updateFunctionComponent, updateHostComponent, updateFragmentComponent } from "./ReactFiberReconciler"
 import { isFn, isStr } from "./utils"
 // 更新vnode
 // 更新dom
@@ -19,6 +19,8 @@ function performUnitOfWork(wip) {
         updateHostComponent(wip)
     } else if(isFn(type)) {
         updateFunctionComponent(wip)
+    } else {
+        updateFragmentComponent(wip)
     }
     // 2. 返回下一个要更新的fiber
     // 深度优先 王朝的故事
