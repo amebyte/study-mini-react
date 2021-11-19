@@ -5,10 +5,19 @@
 import ReactDOM from "./co-react-fiber/reactDom";
 import "./index.css";
 
+function FunctionComponent({name}) {
+    return (
+      <div className="border">
+        <p>{name}</p>
+      </div>
+    );
+}
+
 const jsx = (
   <div className="border">
     <h1>coboy</h1>
     <a href="https://www.amebyte.com.com/">amebyte</a>
+    <FunctionComponent name="cobyte" />
   </div>
 );
 
