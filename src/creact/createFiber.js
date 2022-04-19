@@ -8,6 +8,7 @@ export function createFiber(vnode, returnFiber) {
         type: vnode.type,
         // 定义了当前节点在当前层级下的唯一性
         key: vnode.key,
+        props: vnode.props,
         // 第一个 fiber
         child: null,
         // 下一个 fiber
