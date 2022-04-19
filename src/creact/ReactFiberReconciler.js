@@ -1,5 +1,5 @@
 import { createFiber } from "./createFiber"
-import { isArray } from "./utils"
+import { isArray, isStr } from "./utils"
 
 export function updateHostComponent(wip) {
     // 更新自己
@@ -15,6 +15,9 @@ export function updateHostComponent(wip) {
 }
 
 function reconcileChildren(returnFiber, children) {
+    if(isStr(children)) {
+        return
+    }
     const newChildren = isArray(children) ? children : [children]
 
     let previousNewFiber = null

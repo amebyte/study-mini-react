@@ -11,8 +11,9 @@ export function scheduleUpdateOnFiber(fiber) {
 }
 
 function performUnitOfWork(wip) {
-    const { type } = wip
     // 1. 更新当前fiber
+    const { type } = wip
+    
     if(isStr(type)) {
         updateHostComponent(wip)
     }
