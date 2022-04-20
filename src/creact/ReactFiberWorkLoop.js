@@ -1,5 +1,5 @@
-import { isStr } from './utils'
-import { updateHostComponent } from './ReactFiberReconciler'
+import { isFn, isStr } from './utils'
+import { updateHostComponent, updateFunctionComponent } from './ReactFiberReconciler'
 // 更新vnode
 // 更新dom
 // work in progress 当前正在工作当中的 wip
@@ -16,6 +16,8 @@ function performUnitOfWork(wip) {
     
     if(isStr(type)) {
         updateHostComponent(wip)
+    } else if(isFn(type)) {
+        updateFunctionComponent(wip)
     }
 
     // 2. 返回下一个更新的fiber
@@ -58,7 +60,7 @@ function commitWork(wip) {
     }
     // 1. commit 自己
     const { stateNode } = wip
-    let parentNode = wip.return.stateNode
+    let parentNode = getParentNode(wip.return)
     if(stateNode) {
         parentNode.appendChild(stateNode)
     }
@@ -66,4 +68,13 @@ function commitWork(wip) {
     commitWork(wip.child)
     // 3. cmmit sibling
     commitWork(wip.sibling)
+}
+
+function getParentNode(wip) {
+    while(wip) {
+        if(wip.stateNode) {
+            return wip.stateNode
+        }
+        wip = wip.return
+    }
 }

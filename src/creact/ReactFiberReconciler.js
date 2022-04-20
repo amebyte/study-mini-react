@@ -1,6 +1,12 @@
 import { createFiber } from "./createFiber"
 import { isArray, isStr, updateNode } from "./utils"
 
+export function updateFunctionComponent(wip) {
+    const children = wip.type(wip.props)
+    // 协调子节点
+    reconcileChildren(wip, children)
+}
+
 export function updateHostComponent(wip) {
     // 更新自己
     // 协调子节点
