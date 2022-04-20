@@ -1,5 +1,5 @@
 import { createFiber } from "./createFiber"
-import { isArray, isStr } from "./utils"
+import { isArray, isStr, updateNode } from "./utils"
 
 export function updateHostComponent(wip) {
     // 更新自己
@@ -7,6 +7,7 @@ export function updateHostComponent(wip) {
     if(!wip.stateNode) {
         wip.stateNode = document.createElement(wip.type)
         // 属性
+        updateNode(wip.stateNode, wip.props)
     }
 
     // 协调子节点
