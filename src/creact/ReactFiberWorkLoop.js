@@ -42,8 +42,28 @@ function workLoop(IdleDeadline) {
 
     if(!nextUnitOfWork && wipRoot) {
         // vnode更新完了
-        // commitRoot()
+        commitRoot()
     }
 }
 
 requestIdleCallback(workLoop)
+
+function commitRoot() {
+    commitWork(wipRoot.child)
+}
+
+function commitWork(wip) {
+    if(!wip) {
+        return
+    }
+    // 1. commit 自己
+    const { stateNode } = wip
+    let parentNode = wip.return.stateNode
+    if(stateNode) {
+        parentNode.appendChild(stateNode)
+    }
+    // 2. commit child
+    commitWork(wip.child)
+    // 3. cmmit sibling
+    commitWork(wip.sibling)
+}
