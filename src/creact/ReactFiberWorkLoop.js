@@ -1,5 +1,5 @@
 import { isFn, isStr } from './utils'
-import { updateHostComponent, updateFunctionComponent } from './ReactFiberReconciler'
+import { updateHostComponent, updateFunctionComponent, updateFragmentComponent } from './ReactFiberReconciler'
 // 更新vnode
 // 更新dom
 // work in progress 当前正在工作当中的 wip
@@ -18,6 +18,8 @@ function performUnitOfWork(wip) {
         updateHostComponent(wip)
     } else if(isFn(type)) {
         updateFunctionComponent(wip)
+    } else {
+        updateFragmentComponent(wip)
     }
 
     // 2. 返回下一个更新的fiber
