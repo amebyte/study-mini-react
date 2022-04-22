@@ -50,7 +50,7 @@ function workLoop(IdleDeadline) {
     }
 }
 
-requestIdleCallback(workLoop)
+// requestIdleCallback(workLoop)
 
 function commitRoot() {
     commitWork(wipRoot.child)
