@@ -41,7 +41,7 @@ function performUnitOfWork(wip) {
     return null
 }
 
-function workLoop(IdleDeadline) {
+function workLoop() {
     while(nextUnitOfWork && !shouldYield()) {
         nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
     }
