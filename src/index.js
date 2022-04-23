@@ -30,7 +30,7 @@ const jsx = (
     <h1>coboy</h1>
     <a href="https://www.amebyte.com.com/">amebyte</a>
     <FunctionComponent name="Function" />
-    <FC />
+    {/* <FC /> */}
   </div>
 );
 

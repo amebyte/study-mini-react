@@ -71,6 +71,7 @@ function commitWork(wip) {
     }
 
     if(flags & Update && stateNode) {
+        console.log('update', stateNode, wip.alternate.props, wip.props)
         updateNode(stateNode, wip.alternate.props, wip.props)
     }
 
