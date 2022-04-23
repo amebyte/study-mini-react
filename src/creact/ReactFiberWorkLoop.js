@@ -1,4 +1,5 @@
 import { isFn, isStr } from './utils'
+import { shouldYield } from './scheduler/index'
 import { updateHostComponent, updateFunctionComponent, updateFragmentComponent } from './ReactFiberReconciler'
 // 更新vnode
 // 更新dom
@@ -40,7 +41,7 @@ function performUnitOfWork(wip) {
 }
 
 function workLoop(IdleDeadline) {
-    while(nextUnitOfWork && IdleDeadline.timeRemaining() > 0) {
+    while(nextUnitOfWork && !shouldYield()) {
         nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
     }
 
