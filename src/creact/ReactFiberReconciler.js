@@ -1,5 +1,5 @@
 import { createFiber } from "./createFiber"
-import { isArray, isStr, updateNode } from "./utils"
+import { isArray, isStringOrNumber, updateNode } from "./utils"
 
 export function updateFunctionComponent(wip) {
     const children = wip.type(wip.props)
@@ -27,7 +27,7 @@ export function updateFragmentComponent(wip) {
 }
 
 function reconcileChildren(returnFiber, children) {
-    if(isStr(children)) {
+    if(isStringOrNumber(children)) {
         return
     }
     const newChildren = isArray(children) ? children : [children]
