@@ -1,4 +1,4 @@
-import { isFn, isStr } from './utils'
+import { isFn, isStr, Placement, Update, updateNode } from './utils'
 import { shouldYield, scheduleCallback } from './scheduler/index'
 import { updateHostComponent, updateFunctionComponent, updateFragmentComponent } from './ReactFiberReconciler'
 // 更新vnode
@@ -63,11 +63,16 @@ function commitWork(wip) {
         return
     }
     // 1. commit 自己
-    const { stateNode } = wip
+    const { flags, stateNode } = wip
     let parentNode = getParentNode(wip.return)
-    if(stateNode) {
+    if(flags & Placement && stateNode) {
         parentNode.appendChild(stateNode)
     }
+
+    if(flags & Update && stateNode) {
+        updateNode(stateNode, wip.alternate.props, wip.props)
+    }
+
     // 2. commit child
     commitWork(wip.child)
     // 3. cmmit sibling
