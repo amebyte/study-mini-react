@@ -1,7 +1,9 @@
 import { createFiber } from "./createFiber"
+import { renderHooks } from "./hooks"
 import { isArray, isStringOrNumber, updateNode } from "./utils"
 
 export function updateFunctionComponent(wip) {
+    renderHooks(wip)
     const children = wip.type(wip.props)
     // 协调子节点
     reconcileChildren(wip, children)
