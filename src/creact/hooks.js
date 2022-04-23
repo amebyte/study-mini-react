@@ -13,6 +13,16 @@ function updateWorkInProgressHook() {
     let hook
     if(current) {
         // 组件更新， 在老hook的基础上更新
+        currentlyRenderingFiber.memorizedState = current.memorizedState
+
+        if(workInProgressHook) {
+            // not head
+           hook = workInProgressHook = workInProgressHook.next
+        } else {
+            // head hook
+           hook = workInProgressHook = current.memorizedState
+        }
+
     } else {
         hook = {
             memorizedState: null,
@@ -21,7 +31,7 @@ function updateWorkInProgressHook() {
 
         if(workInProgressHook) {
             // not head
-            workInProgressHook.next = hook
+            workInProgressHook = workInProgressHook.next = hook
         } else {
             // head hook
             workInProgressHook = currentlyRenderingFiber.memorizedState = hook
