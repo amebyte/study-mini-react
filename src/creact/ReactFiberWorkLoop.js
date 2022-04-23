@@ -1,5 +1,5 @@
 import { isFn, isStr } from './utils'
-import { shouldYield } from './scheduler/index'
+import { shouldYield, scheduleCallback } from './scheduler/index'
 import { updateHostComponent, updateFunctionComponent, updateFragmentComponent } from './ReactFiberReconciler'
 // 更新vnode
 // 更新dom
@@ -9,6 +9,7 @@ let nextUnitOfWork = null;
 export function scheduleUpdateOnFiber(fiber) {
     wipRoot = fiber
     nextUnitOfWork = wipRoot
+    scheduleCallback(workLoop)
 }
 
 function performUnitOfWork(wip) {
