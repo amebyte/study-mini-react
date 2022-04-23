@@ -7,6 +7,7 @@ import { updateHostComponent, updateFunctionComponent, updateFragmentComponent }
 let wipRoot = null;
 let nextUnitOfWork = null;
 export function scheduleUpdateOnFiber(fiber) {
+    fiber.alternate = {...fiber}
     wipRoot = fiber
     nextUnitOfWork = wipRoot
     scheduleCallback(workLoop)
@@ -55,7 +56,7 @@ function workLoop() {
 // requestIdleCallback(workLoop)
 
 function commitRoot() {
-    commitWork(wipRoot.child)
+  isFn(wipRoot.type) ? commitWork(wipRoot) :  commitWork(wipRoot.child)
 }
 
 function commitWork(wip) {
