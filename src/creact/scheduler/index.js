@@ -1,11 +1,11 @@
-let tashQueue = []
+let taskQueue = []
 let timerQueue = []
 let deadline = 0
 let yieldInterval = 5
 
 export function scheduleCallback(callback) {
     const newTask = {callback}
-    tashQueue.push(newTask)
+    taskQueue.push(newTask)
     schedule(flushWork)
 }
 
@@ -25,11 +25,11 @@ const postMessage = () => {
 
 function flushWork() {
     deadline = getCurrentTime() + yieldInterval;
-    let currentTask = tashQueue[0]
+    let currentTask = taskQueue[0]
     while(currentTask) {
         currentTask.callback()
-        tashQueue.shift()
-        currentTask = tashQueue[0]
+        taskQueue.shift()
+        currentTask = taskQueue[0]
     }
 }
 
