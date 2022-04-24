@@ -28,30 +28,32 @@ export function updateNode(node, prevVal, nextVal) {
     // .filter(k => k !== "children") 
     .forEach((k) => { 
         if (k === "children") { 
-        // 有可能是文本 
-        if (isStringOrNumber(prevVal[k])) { 
-            node.textContent = ""; 
-        } 
+            // 有可能是文本 
+            if (isStringOrNumber(prevVal[k])) { 
+                node.textContent = ""; 
+            } 
         } else if (k.slice(0, 2) === "on") { 
             const eventName = k.slice(2).toLocaleLowerCase();
             node.removeEventListener(eventName, prevVal[k]);
-        } else { 
-            if (!(k in nextVal)) { node[k] = "";
+        } else {
+            if (!(k in nextVal)) { 
+                node[k] = "";
+            } 
         } 
-    } 
-}); 
-        Object.keys(nextVal) 
+    }); 
+     Object.keys(nextVal) 
         // .filter(k => k !== "children") 
-        .forEach((k) => { if (k === "children") { 
+        .forEach((k) => { 
+            if (k === "children") { 
             // 有可能是文本 
-        if (isStringOrNumber(nextVal[k])) { 
-            node.textContent = nextVal[k] + "";
+                if (isStringOrNumber(nextVal[k])) { 
+                    node.textContent = nextVal[k] + "";
+                }
+            } else if (k.slice(0, 2) === "on") { 
+                const eventName = k.slice(2).toLocaleLowerCase();
+                node.addEventListener(eventName, nextVal[k]);
+            } else { 
+                node[k] = nextVal[k];
+            }
+        });
 }
- } else if (k.slice(0, 2) === "on") { 
-     const eventName = k.slice(2).toLocaleLowerCase();
-      node.addEventListener(eventName, nextVal[k]);
-     } else { 
-         node[k] = nextVal[k];
-         }
-         });
-         }
