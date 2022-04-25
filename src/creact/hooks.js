@@ -1,4 +1,5 @@
 import { scheduleUpdateOnFiber } from "./ReactFiberWorkLoop"
+import { HookLayout, HookPassive } from "./utils"
 let currentlyRenderingFiber = null
 let workInProgressHook = null
 
@@ -6,6 +7,8 @@ export function renderHooks(wip) {
     currentlyRenderingFiber = wip
     currentlyRenderingFiber.memorizedState = null
     workInProgressHook = null
+    currentlyRenderingFiber.updateQueueOfEffect = []
+    currentlyRenderingFiber.updateQueueOfLayout = []
 }
 
 function updateWorkInProgressHook() {
@@ -54,4 +57,24 @@ export function useReducer(reducer, initalState) {
     }
 
     return [hook.memorizedState, dispatch]
+}
+
+function updateEffectImpl(hookFlags, create, deps) {
+    const hook = updateWorkInProgressHook()
+    const effect = {hookFlags, create, deps}
+    hook.memorizedState = effect
+
+    if(hookFlags & HookPassive) {
+        currentlyRenderingFiber.updateQueueOfEffect.push(effect)
+    } else if(hookFlags & HookLayout) {
+        currentlyRenderingFiber.updateQueueOfLayout.push(effect)
+    }
+}
+
+export function useEffect(create, deps) {
+    return updateEffectImpl(HookPassive, create, deps)
+}
+
+export function useLayoutEffect(create, deps) {
+    return updateEffectImpl(HookLayout, create, deps)
 }

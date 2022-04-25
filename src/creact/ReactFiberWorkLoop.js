@@ -59,10 +59,30 @@ function commitRoot() {
   isFn(wipRoot.type) ? commitWork(wipRoot) :  commitWork(wipRoot.child)
 }
 
+function invokeHooks(wip) {
+    const { updateQueueOfEffect, updateQueueOfLayout} = wip
+    for(let i = 0; i < updateQueueOfLayout.length; i++) {
+        const effect = updateQueueOfLayout[i]
+        effect.create()
+    }
+
+    for(let i = 0; i < updateQueueOfEffect.length; i++) {
+        const effect = updateQueueOfEffect[i]
+        scheduleCallback(() => {
+            effect.create()
+        })
+    }
+}
+
 function commitWork(wip) {
     if(!wip) {
         return
     }
+
+    if(isFn(wip.type)) {
+        invokeHooks(wip)
+    }
+
     // 1. commit 自己
     const { flags, stateNode } = wip
     let parentNode = getParentNode(wip.return)

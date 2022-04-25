@@ -2,15 +2,27 @@
 // import ReactDOM from "react-dom";
 // import ReactDOM from "./kreact/react-dom";
 // import Component from "./kreact/Component";
-import {useReducer} from './creact/react'
+// import { useEffect, useLayoutEffect } from 'react/cjs/react.production.min';
+import {useReducer, useEffect, useLayoutEffect} from './creact/react'
 import ReactDOM from "./creact/react-dom";
 import "./index.css";
 
 function FunctionComponent({name}) {
+    const [count1, setCount1] = useReducer(x => x + 1, 0)
     const [count2, setCount2] = useReducer(x => x + 1, 1)
+
+    useEffect(() => {
+        console.log('useEffect', count2)
+    }, [count2])
+
+    useLayoutEffect(() => {
+        console.log('useLayoutEffect', count2)
+    }, [count2])
+
     return (
       <div className="border">
         <p>{name}</p>
+        <button onClick={() => setCount1()}>{count1}</button>
         <button onClick={() => setCount2()}>{count2}</button>
       </div>
     );
