@@ -36,6 +36,28 @@ function placeChild(
     }
 }
 
+function mapRemainingChildren(currentFirstChild) {
+    const existingChildren = new Map();
+    let existingChild = currentFirstChild;
+    while (existingChild) {
+      existingChildren.set(
+        existingChild.key || existingChild.index,
+        existingChild
+      );
+      existingChild = existingChild.sibling;
+    }
+    return existingChildren;
+}
+
+// 删除节点链表,头结点是currentFirstChild
+function deleteRemainingChildren(returnFiber, currentFirstChild) {
+    let childToDelete = currentFirstChild;
+    while (childToDelete) {
+      deleteChild(returnFiber, childToDelete);
+      childToDelete = childToDelete.sibling;
+    }
+}
+
 export function reconcileChildren(returnFiber, children) {
     if(isStringOrNumber(children)) {
         return
@@ -50,7 +72,7 @@ export function reconcileChildren(returnFiber, children) {
     let newIndex = 0
 
     // * 1. 找到能复用的节点，如果碰到不能复用的，那就停止
-    for(; newIndex < newChildren.length; newIndex++) {
+    for(; oldFiber && newIndex < newChildren.length; newIndex++) {
         const newChild = newChildren[newIndex]
         if(newChild === null) {
             continue
@@ -71,8 +93,41 @@ export function reconcileChildren(returnFiber, children) {
             break
         }
 
+        const newFiber = createFiber(newChild, returnFiber)
+
+        Object.assign(newFiber, {
+            alternate: oldFiber,
+            flags: Update,
+            stateNode: oldFiber.stateNode
+        })
+
+        lastPlacedIndex = placeChild(
+            newFiber,
+            lastPlacedIndex,
+            newIndex,
+            shouldTrackSideEffects // 初次渲染（false）还是更新（true）
+        ) 
+        
+        if(previousNewFiber === null) {
+            returnFiber.child = newFiber
+        } else {
+            previousNewFiber.sibling = newFiber
+        }
+
+        previousNewFiber = newFiber
+        oldFiber = nextOldFiber
+
     }
 
+    // * 2. 已经找到了能复用的节点，如果老节点还有的话，直接删除
+    if(newIndex === newChildren.length) {
+        deleteRemainingChildren(returnFiber, oldFiber)
+        return
+    }
+
+    // * 3.
+    // 1). 初次渲染
+    // 2). 老节点已经复用完了，但新节点还有，那就再新增插入
     if(!oldFiber) {
 
         for(; newIndex < newChildren.length; newIndex++) {
@@ -116,6 +171,48 @@ export function reconcileChildren(returnFiber, children) {
         }
 
         return 
+    }
+
+    // * 4. 如果更新阶段，老节点还有，但是新节点没了，老节点全部删除
+    const existingChildren = mapRemainingChildren(oldFiber);
+
+    for(; newIndex < newChildren.length; newIndex++) {
+        const newChild = newChildren[newIndex]
+        if(newChild === null) {
+            continue
+        }
+        const newFiber = createFiber(newChild, returnFiber)
+
+        let matchedFiber = existingChildren.get(newFiber.key || newFiber.index)
+        if(matchedFiber) {
+            existingChildren.delete(matchedFiber.key || matchedFiber.index)
+            Object.assign(newFiber, {
+                alternate: matchedFiber,
+                flags: Update,
+                stateNode: matchedFiber.stateNode
+            })
+        }
+
+        lastPlacedIndex = placeChild(
+            newFiber,
+            lastPlacedIndex,
+            newIndex,
+            shouldTrackSideEffects // 初次渲染（false）还是更新（true）
+        ) 
+        
+        if(previousNewFiber === null) {
+            returnFiber.child = newFiber
+        } else {
+            previousNewFiber.sibling = newFiber
+        }
+
+        previousNewFiber = newFiber
+
+    }
+
+    // *5. 检查还有没有oldFiber
+    if(shouldTrackSideEffects) {
+        existingChildren.forEach(child => deleteChild(returnFiber, child))
     }
 
 }
