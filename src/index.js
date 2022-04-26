@@ -24,6 +24,13 @@ function FunctionComponent({name}) {
         <p>{name}</p>
         <button onClick={() => setCount1()}>{count1}</button>
         <button onClick={() => setCount2()}>{count2}</button>
+        <ul>
+        <li key="0">0</li>
+        <li key="1">1</li>
+        {count2 % 2 ? <li key="2">2</li> : null}
+        <li key="3">3</li>
+        <li key="4">4</li>
+      </ul>
       </div>
     );
 }
