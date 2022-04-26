@@ -95,10 +95,30 @@ function commitWork(wip) {
         updateNode(stateNode, wip.alternate.props, wip.props)
     }
 
+    // 检查wip有没有要删除的子节点
+    if(wip.deletions) {
+        commitDeletions(wip.deletions, stateNode || parentNode)
+    }
+
     // 2. commit child
     commitWork(wip.child)
     // 3. cmmit sibling
     commitWork(wip.sibling)
+}
+
+function commitDeletions(deletions, parentNode) {
+    for(let i = 0; i < deletions.length; i++) {
+        const element = deletions[i]
+        parentNode.removeChild(getStateNode(element))
+    }
+}
+
+function getStateNode(fiber) {
+    let tem = fiber;
+    while(!tem.stateNode) {
+        tem = tem.child
+    }
+    return fiber.stateNode
 }
 
 function getParentNode(wip) {
