@@ -1,3 +1,4 @@
+import { createFiber } from "./createFiber"
 import { isArray } from "./utils"
 
 export function updateHostComponent(wip) {
@@ -12,8 +13,16 @@ export function updateHostComponent(wip) {
 
 function reconcileChildren(returnFiber, children) {
     const newChildren = isArray(children) ? children : [children]
+    let previousNewFiber = null;
     for (let i = 0; i < newChildren.length; i++) {
         const newChild = newChildren[i]
-        
+        const newFiber = createFiber(newChild, returnFiber)
+        if(previousNewFiber === null) {
+            returnFiber.child = newFiber
+        } else {
+            previousNewFiber.sibling = newFiber;
+        }
+
+        previousNewFiber = newFiber
     }
 }
