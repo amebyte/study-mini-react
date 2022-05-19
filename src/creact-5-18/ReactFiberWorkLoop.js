@@ -13,8 +13,8 @@ export function scheduleUpdateOnFiber(fiber) {
 function performUnitOfWork(wip) {
     const { type } = wip
     // 1. 更新当前 fiber
-    if(isStringOrNumber) {
-        updateHostComponent()
+    if(isStringOrNumber(type)) {
+        updateHostComponent(wip)
     }
     // 2. 返回下一个要更新的fiber
     // 深度优先

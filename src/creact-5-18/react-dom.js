@@ -1,3 +1,5 @@
+import { scheduleUpdateOnFiber } from './ReactFiberWorkLoop'
+
 function render(vnode, container) {
     console.log('vnode', vnode)
     const fiberRoot = {
@@ -5,6 +7,7 @@ function render(vnode, container) {
         props: {children: vnode},
         stateNode: container
     }
+    scheduleUpdateOnFiber(fiberRoot)
 }
 
 export default { render }
