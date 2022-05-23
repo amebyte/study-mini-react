@@ -27,6 +27,7 @@ const jsx = (
     <h1>coboy</h1>
     <a href="https://www.amebyte.com/">amebyte</a>
     <FunctionComponent name="coboy" />
+    <FC />
   </div>
 );
 

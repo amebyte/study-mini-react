@@ -18,6 +18,11 @@ export function updateHostComponent(wip) {
     console.log('wip', wip)
 }
 
+export function updateFragmentComponent(wip) {
+    // 协调子节点
+    reconcileChildren(wip, wip.props.children)
+}
+
 function reconcileChildren(returnFiber, children) {
     if(isStringOrNumber(children)) {
         return
