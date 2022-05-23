@@ -1,5 +1,5 @@
-import { updateHostComponent } from "./ReactFiberReconciler";
-import { isStringOrNumber } from "./utils";
+import { updateFunctionComponent, updateHostComponent } from "./ReactFiberReconciler";
+import { isFn, isStringOrNumber } from "./utils";
 
 // 更新vnode
 // 更新dom
@@ -15,6 +15,8 @@ function performUnitOfWork(wip) {
     // 1. 更新当前 fiber
     if(isStringOrNumber(type)) {
         updateHostComponent(wip)
+    } else if(isFn(type)) {
+        updateFunctionComponent(wip)
     }
     // 2. 返回下一个要更新的fiber
     // 深度优先
@@ -55,7 +57,7 @@ function commitWorker(wip) {
     }
     // 1. commit 自己
     const { stateNode } = wip
-    const parentNode = wip.return.stateNode
+    const parentNode = getParentNode(wip.return)
     if(stateNode) {
         parentNode.appendChild(stateNode)
     }
@@ -64,4 +66,13 @@ function commitWorker(wip) {
     commitWorker(wip.child)
     // 3. commit sibling
     commitWorker(wip.sibling)
+}
+
+function getParentNode(wip) {
+    while(wip) {
+        if(wip.stateNode) {
+            return wip.stateNode
+        }
+        wip = wip.return
+    }
 }

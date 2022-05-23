@@ -1,6 +1,11 @@
 import { createFiber } from "./createFiber"
 import { isArray, isStringOrNumber, updateNode } from "./utils"
 
+export function updateFunctionComponent(wip) {
+    const children = wip.type(wip.props)
+    reconcileChildren(wip, children)
+}
+
 export function updateHostComponent(wip) {
     // 更新自己
     if(!wip.stateNode) {

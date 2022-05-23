@@ -25,7 +25,8 @@ function FC() {
 const jsx = (
   <div className="border">
     <h1>coboy</h1>
-    <a href="https://www.amebyte.com.com/">amebyte</a>
+    <a href="https://www.amebyte.com/">amebyte</a>
+    <FunctionComponent name="coboy" />
   </div>
 );
 
