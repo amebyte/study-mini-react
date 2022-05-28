@@ -2,7 +2,7 @@
 // import ReactDOM from "react-dom";
 // import ReactDOM from "./kreact/react-dom";
 // import Component from "./kreact/Component";
-import ReactDOM from "./creact-5-18/react-dom";
+import ReactDOM from "./creact-5-18-2/react-dom";
 import "./index.css";
 
 function FunctionComponent({name}) {
