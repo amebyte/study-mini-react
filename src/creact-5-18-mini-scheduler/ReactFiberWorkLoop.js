@@ -1,4 +1,5 @@
 import { updateFragmentComponent, updateFunctionComponent, updateHostComponent } from "./ReactFiberReconciler";
+import { scheduleCallback, shouldYield } from "./scheduler";
 import { isFn, isStringOrNumber } from "./utils";
 
 // 更新vnode
@@ -8,6 +9,7 @@ let nextUnitOfWork = null;
 export function scheduleUpdateOnFiber(fiber) {
     wipRoot = fiber;
     nextUnitOfWork = fiber;
+    scheduleCallback(workLoop)
 }
 
 function performUnitOfWork(wip) {
@@ -36,8 +38,8 @@ function performUnitOfWork(wip) {
     return null;
 }
 
-function workLoop(IdleDeadline) {
-    while(nextUnitOfWork && IdleDeadline.timeRemaining() > 0) {
+function workLoop() {
+    while(nextUnitOfWork && !shouldYield()) {
         nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
     }
 
@@ -47,7 +49,7 @@ function workLoop(IdleDeadline) {
     }
 }
 
-requestIdleCallback(workLoop)
+// requestIdleCallback(workLoop)
 
 function commitRoot() {
     commitWorker(wipRoot.child)
