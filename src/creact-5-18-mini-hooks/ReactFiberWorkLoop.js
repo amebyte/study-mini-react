@@ -1,12 +1,13 @@
 import { updateFragmentComponent, updateFunctionComponent, updateHostComponent } from "./ReactFiberReconciler";
 import { scheduleCallback, shouldYield } from "./scheduler";
-import { isFn, isStringOrNumber } from "./utils";
+import { isFn, isStringOrNumber, Placement, Update, updateNode } from "./utils";
 
 // 更新vnode
 // 更新dom
 let wipRoot = null;
 let nextUnitOfWork = null;
 export function scheduleUpdateOnFiber(fiber) {
+    fiber.alternate = {...fiber}
     wipRoot = fiber;
     nextUnitOfWork = fiber;
     scheduleCallback(workLoop)
@@ -52,7 +53,7 @@ function workLoop() {
 // requestIdleCallback(workLoop)
 
 function commitRoot() {
-    commitWorker(wipRoot.child)
+    isFn(wipRoot.type) ? commitWorker(wipRoot) : commitWorker(wipRoot.child)
 }
 
 function commitWorker(wip) {
@@ -60,12 +61,17 @@ function commitWorker(wip) {
         return
     }
     // 1. commit 自己
-    const { stateNode } = wip
+    const { flags, stateNode } = wip
     const parentNode = getParentNode(wip.return)
-    if(stateNode) {
+    if(flags & Placement && stateNode) {
+        console.log('xxx', stateNode, parentNode)
         parentNode.appendChild(stateNode)
     }
 
+    if(flags & Update && stateNode) {
+        updateNode(stateNode, wip.alternate.props, wip.props)
+    }
+    
     // 2. commit child
     commitWorker(wip.child)
     // 3. commit sibling
