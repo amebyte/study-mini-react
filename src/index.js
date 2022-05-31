@@ -15,7 +15,7 @@ function FunctionComponent({name}) {
     }, [count2])
 
     useLayoutEffect(() => {
-        console.log('useEffect', count2)
+        console.log('useLayoutEffect', count2)
     }, [count2])
 
 
