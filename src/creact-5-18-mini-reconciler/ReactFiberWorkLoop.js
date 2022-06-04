@@ -91,11 +91,29 @@ function commitWorker(wip) {
     if(flags & Update && stateNode) {
         updateNode(stateNode, wip.alternate.props, wip.props)
     }
+
+    if(wip.deletions) {
+        commitDeletions(wip.deletions, stateNode || parentNode)
+    }
     
     // 2. commit child
     commitWorker(wip.child)
     // 3. commit sibling
     commitWorker(wip.sibling)
+}
+
+function commitDeletions(deletions, parentNode) {
+    for(let i = 0; i < deletions.length; i++) {
+        const element = deletions[i]
+        parentNode.removeChild(getStateNode(element))
+    }
+}
+
+function getStateNode(fiber) {
+    while (!fiber.stateNode) {
+        fiber = fiber.child
+    }
+    return fiber.stateNode
 }
 
 function getParentNode(wip) {

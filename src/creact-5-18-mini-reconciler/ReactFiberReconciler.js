@@ -25,6 +25,14 @@ export function updateFragmentComponent(wip) {
     reconcileChildren(wip, wip.props.children)
 }
 
+function deleteChild(returnFiber, childToDelete) {
+    if(returnFiber.deletions) {
+        returnFiber.deletions.push(childToDelete)
+    } else {
+        returnFiber.deletions = [childToDelete]
+    }
+}
+
 function reconcileChildren(returnFiber, children) {
     if(isStringOrNumber(children)) {
         return
@@ -47,6 +55,10 @@ function reconcileChildren(returnFiber, children) {
                 flags: Update,
                 stateNode: oldFiber.stateNode
             })
+        }
+
+        if(!same && oldFiber) {
+            deleteChild(returnFiber, oldFiber)
         }
 
         if(oldFiber) {
