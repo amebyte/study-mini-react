@@ -83,9 +83,17 @@ function commitWorker(wip) {
     // 1. commit 自己
     const { flags, stateNode } = wip
     const parentNode = getParentNode(wip.return)
-    if(flags & Placement && stateNode) {
-        console.log('xxx', stateNode, parentNode)
-        parentNode.appendChild(stateNode)
+    // if(flags & Placement && stateNode) {
+    //     parentNode.appendChild(stateNode)
+    // }
+
+    if (flags & Placement && stateNode) {
+        let hasSiblingNode = foundSiblingNode(wip, parentNode);
+        if (hasSiblingNode) {
+          parentNode.insertBefore(stateNode, hasSiblingNode);
+        } else {
+          parentNode.appendChild(wip.stateNode);
+        }
     }
 
     if(flags & Update && stateNode) {
@@ -100,6 +108,21 @@ function commitWorker(wip) {
     commitWorker(wip.child)
     // 3. commit sibling
     commitWorker(wip.sibling)
+}
+
+// 找后面最近的有DOM节点的fiber
+function foundSiblingNode(fiber, parentNode) {
+    let siblingHasNode = fiber.sibling;
+    let node = null;
+    while (siblingHasNode) {
+      node = siblingHasNode.stateNode;
+      if (node && parentNode.contains(node)) {
+        return node;
+      }
+      siblingHasNode = siblingHasNode.sibling;
+    }
+  
+    return null;
 }
 
 function commitDeletions(deletions, parentNode) {
