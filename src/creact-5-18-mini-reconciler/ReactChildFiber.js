@@ -15,7 +15,7 @@ function placeChild(
     newIndex,
     shouldTrackSideEffects // 初次渲染（false）还是更新（true）
   ) {
-    // 当当前下标记录到 Fiber 上
+    // 把当前下标记录到 Fiber 上
     newFiber.index = newIndex;
     if (!shouldTrackSideEffects) {
       return lastPlacedIndex;
@@ -109,7 +109,8 @@ export function reconcileChildren(returnFiber, children) {
             newIdx,
             shouldTrackSideEffects // 初次渲染（false）还是更新（true）
         )
-
+        
+        // 如果是头节点
         if(previousNewFiber === null) {
             returnFiber.child = newFiber
         } else {
@@ -117,6 +118,7 @@ export function reconcileChildren(returnFiber, children) {
         }
 
         previousNewFiber = newFiber
+        // 往后指向
         oldFiber = nextOldFiber
     }
 

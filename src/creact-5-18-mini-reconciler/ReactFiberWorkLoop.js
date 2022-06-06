@@ -88,6 +88,7 @@ function commitWorker(wip) {
     // }
 
     if (flags & Placement && stateNode) {
+        // 找后面有没有节点
         let hasSiblingNode = foundSiblingNode(wip, parentNode);
         if (hasSiblingNode) {
           parentNode.insertBefore(stateNode, hasSiblingNode);
