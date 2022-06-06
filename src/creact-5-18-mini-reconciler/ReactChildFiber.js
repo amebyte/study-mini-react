@@ -15,6 +15,7 @@ function placeChild(
     newIndex,
     shouldTrackSideEffects // 初次渲染（false）还是更新（true）
   ) {
+    // 当当前下标记录到 Fiber 上
     newFiber.index = newIndex;
     if (!shouldTrackSideEffects) {
       return lastPlacedIndex;
@@ -67,6 +68,7 @@ export function reconcileChildren(returnFiber, children) {
     let shouldTrackSideEffects = !!returnFiber.alternate
     let oldFiber = returnFiber.alternate && returnFiber.alternate.child
     let nextOldFiber = null
+    // 上次插入的位置
     let lastPlacedIndex = 0;
     let newIdx = 0;
 
@@ -134,6 +136,7 @@ export function reconcileChildren(returnFiber, children) {
                 continue
             }
             const newFiber = createFiber(newChild, returnFiber)
+            // 记录当前的位置
             lastPlacedIndex = placeChild(
                 newFiber,
                 lastPlacedIndex,
@@ -141,7 +144,7 @@ export function reconcileChildren(returnFiber, children) {
                 shouldTrackSideEffects // 初次渲染（false）还是更新（true）
             )
 
-            const same = sameNode(newFiber, oldFiber)
+            // const same = sameNode(newFiber, oldFiber)
             
             // if(same) {
             //     Object.assign(newFiber, {
@@ -167,6 +170,7 @@ export function reconcileChildren(returnFiber, children) {
     
             previousNewFiber = newFiber
         }
+        return
     }
 
     // * 4. 如果更新阶段，老节点还有，但是新节点没了，老节点全部删除
