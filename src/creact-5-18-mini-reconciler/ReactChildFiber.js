@@ -192,7 +192,7 @@ export function reconcileChildren(returnFiber, children) {
                 stateNode: matchedFiber.stateNode
             })
         }
-
+        
         lastPlacedIndex = placeChild(
             newFiber,
             lastPlacedIndex,
