@@ -15,7 +15,7 @@ function placeChild(
     newIndex,
     shouldTrackSideEffects // 初次渲染（false）还是更新（true）
   ) {
-    // 把当前下标记录到 Fiber 上
+    // 把当前下标记录到 Fiber 上  
     newFiber.index = newIndex;
     if (!shouldTrackSideEffects) {
       return lastPlacedIndex;
