@@ -116,7 +116,7 @@ export function reconcileChildren(returnFiber, children) {
         } else {
             previousNewFiber.sibling = newFiber
         }
-
+        // 这一次 Fiber 就是下一次 Fiber 的上一个 Fiber
         previousNewFiber = newFiber
         // 往后指向
         oldFiber = nextOldFiber
