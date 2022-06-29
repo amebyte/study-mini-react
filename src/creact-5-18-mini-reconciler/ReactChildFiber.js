@@ -68,7 +68,7 @@ export function reconcileChildren(returnFiber, children) {
     let shouldTrackSideEffects = !!returnFiber.alternate
     let oldFiber = returnFiber.alternate && returnFiber.alternate.child
     let nextOldFiber = null
-    // 上次插入的位置
+    // 上一次协调的返回的位置
     let lastPlacedIndex = 0;
     let newIdx = 0;
 
