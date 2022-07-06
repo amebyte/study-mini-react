@@ -5,7 +5,7 @@
 import { useReducer, useEffect, useLayoutEffect } from "./creact-5-18-mini-reconciler/react";
 import ReactDOM from "./creact-5-18-mini-reconciler/react-dom";
 import "./index.css";
-
+// 凌晨一点
 function FunctionComponent({name}) {
     const [count1, setCount1] = useReducer(x => x + 1, 0)
     const [count2, setCount2] = useReducer(x => x + 1, 1)
