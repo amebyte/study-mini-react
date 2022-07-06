@@ -1,6 +1,6 @@
 import { createFiber } from "./createFiber";
 import { isArray, isStringOrNumber, Placement, Update } from "./utils";
-
+// 如果某一个类型的key值和类型相同，同一层级才进行复用
 function deleteChild(returnFiber, childToDelete) {
     if(returnFiber.deletions) {
         returnFiber.deletions.push(childToDelete)
