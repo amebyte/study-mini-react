@@ -10,6 +10,7 @@ export function renderHooks(wip) {
     currentlyRenderingFiber.memorizedState = null
     currentlyRenderingFiber.updateQueueOfEffect = []
     currentlyRenderingFiber.updateQueueOfLayoutEffect = []
+    // 正在工作的 Hook
     workInProgressHook = null
 }
 
@@ -20,11 +21,11 @@ function updateWorkInProgressHook() {
         // 组件更新，在老hook的基础上更新
         currentlyRenderingFiber.memorizedState = current.memorizedState
         if(workInProgressHook) {
-            // not head
+            // 不是头节点 Hook
             hook = workInProgressHook = workInProgressHook.next
             currentHook = currentHook.next
         } else {
-            // head hook
+            // 头节点 Hook
             hook = workInProgressHook = current.memorizedState
             currentHook = current.memorizedState
         }
@@ -35,12 +36,12 @@ function updateWorkInProgressHook() {
             memorizedState: null,
             next: null
         }
-
+        // 判断有没有正在工作的 Hook
         if(workInProgressHook) {
-            // not head
+            // 不是头节点
             workInProgressHook = workInProgressHook.next = hook
         } else {
-            // head hook
+            // 头节点 Hook
             workInProgressHook = currentlyRenderingFiber.memorizedState = hook
         }
     }
