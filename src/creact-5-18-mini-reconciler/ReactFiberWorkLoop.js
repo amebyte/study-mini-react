@@ -76,10 +76,6 @@ function commitWorker(wip) {
         return
     }
 
-    if(isFn(wip.type)) {
-        invokeHooks(wip)
-    }
-
     // 1. commit 自己
     const { flags, stateNode } = wip
     const parentNode = getParentNode(wip.return)
@@ -103,6 +99,10 @@ function commitWorker(wip) {
 
     if(wip.deletions) {
         commitDeletions(wip.deletions, stateNode || parentNode)
+    }
+
+    if(isFn(wip.type)) {
+        invokeHooks(wip)
     }
     
     // 2. commit child

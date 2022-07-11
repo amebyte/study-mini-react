@@ -4,6 +4,7 @@ import { updateNode } from "./utils"
 
 export function updateFunctionComponent(wip) {
     renderHooks(wip)
+    console.log("renderHooks")
     const children = wip.type(wip.props)
     reconcileChildren(wip, children)
 }

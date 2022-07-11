@@ -1,20 +1,23 @@
-// import React, {Component} from "react";
-// import ReactDOM from "react-dom";
+import React, {Component, useReducer, useEffect, useLayoutEffect} from "react";
+import ReactDOM from "react-dom";
 // import ReactDOM from "./kreact/react-dom";
 // import Component from "./kreact/Component";
-import { useReducer, useEffect, useLayoutEffect } from "./creact-5-18-mini-reconciler/react";
-import ReactDOM from "./creact-5-18-mini-reconciler/react-dom";
+// import { useReducer, useEffect, useLayoutEffect } from "./creact-5-18-mini-reconciler/react";
+// import ReactDOM from "./creact-5-18-mini-reconciler/react-dom";
 import "./index.css";
 // 凌晨一点
 function FunctionComponent({name}) {
     const [count1, setCount1] = useReducer(x => x + 1, 0)
     const [count2, setCount2] = useReducer(x => x + 1, 1)
-
+    let a = 'aaa'
+    let b = 'bbb'
     useEffect(() => {
         console.log('useEffect', count2)
+        b = ''
     }, [count2])
 
     useLayoutEffect(() => {
+        a = 'xxxx'
         console.log('useLayoutEffect', count2)
     }, [count2])
 
@@ -22,8 +25,8 @@ function FunctionComponent({name}) {
     return (
       <div className="border">
         <p>{name}</p>
-        <button onClick={() => setCount1()}>{count1}</button>
-        <button onClick={() => setCount2()}>{count2}</button>
+        <button onClick={() => setCount1()}>{count1}==={a}</button>
+        <button onClick={() => setCount2()}>{count2}==={b}</button>
         <ul>
             <li key="0">0</li>
             <li key="1">1</li>
